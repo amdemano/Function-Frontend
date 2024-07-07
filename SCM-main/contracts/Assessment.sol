@@ -9,6 +9,8 @@ contract Assessment {
 
     event Deposit(uint256 amount);
     event Withdraw(uint256 amount);
+    event Burn(uint256 amount);
+    event Mint(uint256 amount);
 
     constructor(uint initBalance) payable {
         owner = payable(msg.sender);
@@ -57,4 +59,29 @@ contract Assessment {
         // emit the event
         emit Withdraw(_withdrawAmount);
     }
+
+    // New custom error for burn
+    error InsufficientBalanceForBurn(uint256 balance, uint256 burnAmount);
+
+    // Burn function to reduce balance
+    function burn(uint256 _burnAmount) public {
+        require(msg.sender == owner, "You are not the owner of this account");
+        uint _previousBalance = balance;
+        if (balance < _burnAmount) {
+            revert InsufficientBalanceForBurn({
+                balance: balance,
+                burnAmount: _burnAmount
+            });
+        }
+
+        // burn the given amount
+        balance -= _burnAmount;
+
+        // assert the balance is correct
+        assert(balance == (_previousBalance - _burnAmount));
+
+        // emit the event
+        emit Burn(_burnAmount);
+    }
+
 }
