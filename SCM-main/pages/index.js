@@ -7,8 +7,8 @@ export default function HomePage() {
   const [account, setAccount] = useState(undefined);
   const [atm, setATM] = useState(undefined);
   const [balance, setBalance] = useState(undefined);
-  const [amount, setAmount] = useState(1);
   const [message, setMessage] = useState("");
+  
 
   const contractAddress = "0x5FbDB2315678afecb367f032d93F642f64180aa3";
   const atmABI = atm_abi.abi;
@@ -66,7 +66,7 @@ export default function HomePage() {
       let tx = await atm.deposit(1);
       await tx.wait()
       getBalance();
-      setMessage(`Deposited ${amount} ETH successfully!`);
+      setMessage(`Deposited 1 ETH successfully!`);
     }
   }
 
@@ -75,7 +75,7 @@ export default function HomePage() {
       let tx = await atm.withdraw(1);
       await tx.wait()
       getBalance();
-      setMessage(`Withdrew ${amount} ETH successfully!`);
+      setMessage(`Withdrew 1 ETH successfully!`);
     }
   }
 
@@ -84,7 +84,16 @@ export default function HomePage() {
       let tx = await atm.burn(1);
       await tx.wait();
       getBalance();
-      setMessage(`Burned ${amount} ETH successfully!`);
+      setMessage(`Burned 1 ETH successfully!`);
+    }
+  }
+
+  const mint = async () => {
+    if (atm) {
+      let tx = await atm.mint(1); // Mint the specified amount
+      await tx.wait();
+      getBalance();
+      setMessage(`Minted 1 ETH successfully!`);
     }
   }
 
@@ -106,14 +115,16 @@ export default function HomePage() {
     return (
       <div className="content">
         <div className="info-box">
+          <p><strong>Owner Address:</strong> {contractAddress}</p>
           <p><strong>Your Account:</strong> {account}</p>
-          <p><strong>Contract Address:</strong> {contractAddress}</p>
           <p><strong>Your Balance:</strong> {balance} ETH</p>
+          
         </div>
         <div className="controls">
           <button onClick={deposit} className="action-button">Deposit 1 ETH</button>
           <button onClick={withdraw} className="action-button">Withdraw 1 ETH</button>
           <button onClick={burn} className="action-button">Burn 1 ETH</button>
+          <button onClick={mint} className="action-button">Mint 1 ETH</button>
           <p>{message}</p>
         </div>
       </div>
@@ -128,53 +139,64 @@ export default function HomePage() {
       {initUser()}
       <style jsx>{`
         .container {
-          text-align: center;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          min-height: 100vh;
           background-color: #f0f8ff; /* Light blue background color */
-          padding: 20px;
-          border-radius: 10px;
+          font-family: Arial, sans-serif;
         }
-          header h1 {
+        header h1 {
           font-family: 'Courier New', monospace; /* Change the font */
           color: #331010; /* Change the color */
           font-style: italic;
           margin-bottom: 30px;
         }
+        .header-buttons {
+          margin-bottom: 20px;
+          text-align: center;
+        }
         .content {
-          display: flex;
+        display: flex;
           justify-content: space-between;
           align-items: flex-start;
+          background-color: #ffffff; /* White content background */
+          border: 1px solid #d3d3d3; /* Light gray border */
+          border-radius: 8px;
+          padding: 20px;
+          max-width: 600px;
+          width: 100%;
+          box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1); /* Light shadow */
         }
         .info-box {
-          background-color: #e6f7ff;
-          border: 1px solid #b3daff;
+          background-color: #f0f0f0; /* Light gray background */
+          border-radius: 5px;
           padding: 10px;
-          border-radius: 10px;
           margin-bottom: 20px;
-          text-align: left; /* Align text to the left */
-          width: fit-content; /* Adjust width to content */
         }
         .controls {
           display: flex;
           flex-direction: column;
           align-items: center;
-          flex-grow: 1;
         }
         .action-button {
           margin: 5px;
           padding: 10px 20px;
           font-size: 16px;
-          color: #fff;
-          background-color: #007bff;
+          color: #ffffff; /* White text */
+          background-color: #007bff; /* Blue button */
           border: none;
           border-radius: 5px;
           cursor: pointer;
+          transition: background-color 0.3s ease;
         }
         .action-button:hover {
-          background-color: #0056b3;
+          background-color: #0056b3; /* Darker blue on hover */
         }
-        p {
-          font-family: 'Georgia', serif;
-          
+        .message {
+          margin-top: 10px;
+          font-style: italic;
+          color: #555555; /* Gray message text */
         }
       `}
       </style>
