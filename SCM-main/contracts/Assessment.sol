@@ -11,6 +11,7 @@ contract Assessment {
     event Withdraw(uint256 amount);
     event Burn(uint256 amount);
     event Mint(uint256 amount);
+    
 
     constructor(uint initBalance) payable {
         owner = payable(msg.sender);
@@ -82,6 +83,21 @@ contract Assessment {
 
         // emit the event
         emit Burn(_burnAmount);
+    }
+
+    // Mint function to increase balance
+    function mint(uint256 _mintAmount) public {
+        require(msg.sender == owner, "You are not the owner of this account");
+        uint _previousBalance = balance;
+
+        // mint the given amount
+        balance += _mintAmount;
+
+        // assert the balance is correct
+        assert(balance == (_previousBalance + _mintAmount));
+
+        // emit the event
+        emit Mint(_mintAmount);
     }
 
 }
