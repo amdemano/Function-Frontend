@@ -1,4 +1,16 @@
-# Starter Next/Hardhat Project
+# Simple Smart Contract
+
+This repository contains a simple Solidity smart contract named `Assessment` that allows for basic deposit, withdraw, burn, and mint functionalities.
+
+## Features
+
+- **Deposit**: Allows the owner to deposit funds into the contract.
+- **Withdraw**: Allows the owner to withdraw funds from the contract.
+- **Burn**: Allows the owner to burn (reduce) the contract's balance.
+- **Mint**: Allows the owner to mint (increase) the contract's balance.
+
+## Getting Started
+### Installation
 
 After cloning the github, you will want to do the following to get the code running on your computer.
 
